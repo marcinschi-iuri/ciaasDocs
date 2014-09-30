@@ -1,0 +1,105 @@
+{%extends '../common/layout.html'%}
+
+{% block secondary-header %}
+<div class="secondary-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row-fluid clearfix">
+                    <div class="col-lg-10 col-xs-12">
+                        <ol class="breadcrumb">
+                            <li class="active">Projects</li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-2 col-xs-12">
+                        <div class="action-button">
+                            <a href="/projects/create" class="btn btn-primary btn-block btn-lg">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                New project
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+{% endblock %}
+
+{%block center_column%}
+<div class="row-fluid content">
+    <div class="col-lg-12 zebra-rows">
+    {%if projects.length > 0%}
+            {% for project in projects%}
+                <div class="t-row row-fluid clearfix">
+                    <div class="main-col col-lg-8">
+                        <h4 class="repo-name">{{project.name}}</h4>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="text-muted">Container : </div> 
+                                <span>
+                                    {{project.container.name}}
+                                </span>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-muted">Branch : </div> 
+                                <span class="badge">
+                                    {{project.default_branch}}
+                                </span>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="text-muted">Status : </div> 
+                                {%if project.lastBuildStatus() == 'SUCCESS'%}
+                                    <span class="label label-success">
+                                        Build {{project.lastBuildId()}} passing
+                                    </span>
+                                {%endif%}
+                                {%if project.lastBuildStatus() == 'FAILED'%}
+                                    <span class="label label-danger">
+                                        Build {{project.lastBuildId()}} failing
+                                    </span>
+                                {%endif%}
+                                {%if project.isInProgress()%}
+                                    <span class="label label-warning">
+                                        Build {{project.lastBuildId()}} in progress...
+                                    </span>
+                                {%endif%}
+                                {%if project.lastBuildId() == null%}
+                                    <span class="label label-default">
+                                        Not build yet
+                                    </span>
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-col col-lg-4">
+                        <form method="post" action="/projects/{{project.id}}/build">
+                            <div class="pull-right">
+                                {%if not project.isInProgress()%}
+                                    <button class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-flash"></span>
+                                        Build
+                                    </button>
+                                {%endif%}
+                                <a class="btn btn-info"
+                                   href="/projects/{{project.id}}/build"><i
+                                        class="glyphicon glyphicon-time"></i> History</a>
+                                <a class="btn btn-success"
+                                   href="/projects/{{project.id}}/config"><i
+                                        class="glyphicon glyphicon-cog"></i></a>
+                                <a class="btn btn-danger"
+                                   href="/projects/{{project.id}}/delete"><i
+                                        class="glyphicon glyphicon-trash"></i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {%endfor%}
+        {%else%}
+        <div class="alert alert-block text-center">
+            You don't have any projects yet. Try to create new one.
+        </div>
+        {%endif%}
+    </div>
+</div>
+{%endblock%}

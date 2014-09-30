@@ -1,0 +1,88 @@
+{%extends '../common/layout.html'%}
+{% block secondary-header %}
+<div class="secondary-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row-fluid clearfix">
+                    <div class="col-lg-10 col-xs-12">
+                        <ol class="breadcrumb">
+                            <li class=""><a href="/projects">Projects</a></li>
+                            <li class=""><a href="/projects/{{project.id}}/config">{{project.name}}</a></li>
+                            <li class="active">History</li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-2 col-xs-12">
+                        <form method="post" action="/projects/{{project.id}}/build" class="action-button">
+                            <button href="/projects/create" class="btn btn-primary btn-block btn-lg">
+                                <i class="glyphicon glyphicon-flash"></i>
+                                Build
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+{% endblock %}
+{%block center_column%}
+        {%if builds.length > 0%}
+            <div class="row-fluid content">
+                <div class="col-lg-12 zebra-rows build-list">
+                    {% for build in builds%}
+                        <div class="t-row row-fluid clearfix">
+                            <div class="build-id main-col col-lg-1 col-xs-4">
+                                {%if build.status_exec == 'COMPLETE'%}
+                                    {%if build.status_result == "SUCCESS"%}
+                                        <a class="build-success" href="/projects/{{project.id}}/build/{{build.build_id}}">
+                                            <span>{{build.build_id}}</span>
+                                        </a>
+                                    {%endif%}
+                                    {%if build.status_result != "SUCCESS"%}
+                                        <a class="build-failed" href="/projects/{{project.id}}/build/{{build.build_id}}">
+                                            <span>{{build.build_id}}</span>
+                                        </a>
+                                    {%endif%}
+                                {%else%}
+                                    <a class="build-progress" href="/projects/{{project.id}}/build/{{build.build_id}}">
+                                        <span>{{build.build_id}}</span>
+                                    </a>
+                                {%endif%}
+
+                            </div>
+                            <div class="build-state main-col col-lg-3 col-xs-8">
+                                <div><span class="text-muted">Branch : </span><span class="badge">{{build.branch}}</span></div>
+                                <div><span class="text-muted">Commit SHA : </span><span>{{build.commit_id|substring(6)}}</span></div>
+                                <div><span class="text-muted">Committed by : </span><span>{{build.commit_author}}</span></div>
+                                <div><span class="text-muted">Message : </span><span>{{build.commit_message}}</span></div>
+                            </div>
+                            <div class="build-time main-col col-lg-2 col-xs-6">{%if build.status_exec == "COMPLETE"%}
+                                    <span>Started : <div>{{build.started|date('Y-m-d H:i:s')}}</div></span>
+                                {%endif%}
+                            </div>
+                            <div class="build-time main-col col-lg-2 col-xs-6">
+                                {%if build.status_exec == "COMPLETE"%}
+                                    <span>Finished : <div>{{build.finished|date('Y-m-d H:i:s')}}</div></span>
+                                {%endif%}
+                            </div>
+                            <div class="build-time main-col col-lg-2 col-xs-12">
+                                {%if build.status_exec == "COMPLETE"%}
+                                    <span>Elapsed : <div>{{build.elapsed()|date('H:i:s')}}</div></span>
+                                {%endif%}
+                            </div>
+                            <div class="action-col main-col col-lg-2 col-xs-12">
+                                    <a class="btn btn-info btn-block"
+                                       href="/projects/{{project.id}}/build/{{build.build_id}}"><span
+                                            class="glyphicon glyphicon-time"></span> View log</a>
+                            </div>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        {%else%}
+        <div class="alert alert-block">
+            No entries yet
+        </div>
+        {%endif%}
+{%endblock%}

@@ -1,0 +1,76 @@
+.
+|-- organizacao.txt
+|-- cartaz
+|   `-- cs.pdf
+|-- relatorio
+|   `-- rfs.pdf
+|-- manual de operacoes
+|   `-- opm.pdf
+|-- resumo
+|   `-- rs.pdf
+`-- src
+    |-- app
+    |   |-- hub
+    |   |   |-- config.json
+    |   |   |-- lib
+    |   |   |-- package.json
+    |   |   |-- README.md
+    |   |   |-- server.js
+    |   |   `-- tests
+    |   |-- web
+    |   |   |-- assets
+    |   |   |-- bower.json
+    |   |   |-- common
+    |   |   |-- config
+    |   |   |-- config.json
+    |   |   |-- controllers
+    |   |   |-- Gruntfile.js
+    |   |   |-- migrations
+    |   |   |-- models
+    |   |   |-- package.json
+    |   |   |-- repository
+    |   |   |-- server.js
+    |   |   |-- tests
+    |   |   `-- views
+    |   `-- worker
+    |       |-- config.json
+    |       |-- coverage.html
+    |       |-- docs
+    |       |-- lib
+    |       |-- package.json
+    |       |-- server.js
+    |       `-- tests
+    |-- containers
+    |   |-- base
+    |   |   `-- Dockerfile
+    |   |-- Berksfile
+    |   |-- cookbooks
+    |   |   `-- container-nodejs
+    |   |-- metadata.rb
+    |   `-- nodejs
+    |       `-- nodejs.json
+    |-- cookbooks
+    |   |-- aws-ciaas
+    |   |   |-- attributes
+    |   |   |-- Berksfile
+    |   |   |-- chefignore
+    |   |   |-- Gemfile
+    |   |   |-- metadata.rb
+    |   |   |-- recipes
+    |   |   `-- Thorfile
+    |   `-- ciaas
+    |       |-- attributes
+    |       |-- Berksfile
+    |       |-- chefignore
+    |       |-- Gemfile
+    |       |-- metadata.rb
+    |       |-- recipes
+    |       |-- templates
+    |       `-- Thorfile
+    |-- crash.log
+    |-- README.md
+    |-- roles
+    |   `-- dev.rb
+    `-- Vagrantfile
+
+36 directories, 34 files

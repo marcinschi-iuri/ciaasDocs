@@ -1,0 +1,88 @@
+{%extends '../common/layout.html'%}
+{%block js%}
+<!-- TODO: when env configuration will be ready add condition block to load only one mified js -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app/angular/angular.min.js"></script>
+<script src="/app/angular-route/angular-route.min.js"></script>
+<script src="/app/angular-socket-io/socket.min.js"></script>
+<script src="/app/js/app.js"></script>
+<script src="/app/js/services.js"></script>
+<script src="/app/js/controllers.js"></script>
+<script src="/app/js/filters.js"></script>
+<script src="/app/js/directives.js"></script>
+{%endblock%}
+{% block secondary-header %}
+<div class="secondary-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row-fluid clearfix">
+                    <div class="col-lg-12 col-xs-12">
+                        <ol class="breadcrumb">
+                            <li class=""><a href="/projects">Projects</a></li>
+                            <li class=""><a href="/projects/{{project.id}}/build">History</a></li>
+                            <li class=""><a href="/projects/{{project.id}}/config">{{project.name}}</a></li>
+                            <li class="active">Build <span class="badge badge-default">{{build.build_id}}</span></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+{% endblock %}
+{%block center_column%}
+<div class="editor" ng-controller="RTBuildResultController" ng-init="init({{build.build_id}},{{build.id}})">
+    <div ng-show="complete && complete.StatusCode == 0" class="build-status-header build-success">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row-fluid clearfix meta">
+                        <div class="col-lg-12 col-xs-12">
+                            Build #{{build.build_id}} successful
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div ng-show="complete && complete.StatusCode != 0" class="build-status-header build-fail">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row-fluid clearfix meta">
+                        <div class="col-lg-12 col-xs-12">
+                            Build #{{build.build_id}} failed
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div ng-hide="complete" class="build-status-header build-progress">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row-fluid clearfix meta">
+                        <div class="col-lg-10 col-xs-12">
+                            Build in progress...
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="content row-fluid">
+        <div class="col-lg-12">
+            <div>
+                <div id="container" class="output">
+                    <div ng-repeat="line in lines track by $index">
+                        <span ng-bind-html="line.data | to_trusted"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
